@@ -1,6 +1,8 @@
 package com.paskauskyte.myweather.search_fragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -38,6 +40,7 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setUpRecyclerView()
+        setupSearchView()
         addCityList()
     }
 
@@ -64,6 +67,20 @@ class SearchFragment : Fragment() {
     private fun submitCities(list: List<City>) {
         recyclerAdapter?.submitList(list)
         binding.searchRecyclerView.adapter = recyclerAdapter
+    }
+
+    private fun setupSearchView() {
+        binding.searchView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.generateCities()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
