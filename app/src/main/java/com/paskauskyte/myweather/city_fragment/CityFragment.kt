@@ -1,13 +1,12 @@
 package com.paskauskyte.myweather.city_fragment
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.paskauskyte.myweather.R
 import com.paskauskyte.myweather.databinding.FragmentCityBinding
 
@@ -30,13 +29,13 @@ class CityFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCityBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     companion object {
+        const val TAG = "city_fragment"
         fun newInstance() = CityFragment()
     }
-
 }
