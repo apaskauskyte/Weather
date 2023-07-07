@@ -15,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import coil.load
 import coil.size.ViewSizeResolver
 import com.paskauskyte.myweather.R
+import com.paskauskyte.myweather.WeatherActivity
 import com.paskauskyte.myweather.databinding.FragmentCityBinding
 import kotlinx.coroutines.launch
 
@@ -36,6 +37,18 @@ class CityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        addCityWeatherData()
+        onClickSearchButton()
+    }
+
+    private fun onClickSearchButton() {
+        binding.openSearchButton.setOnClickListener {
+            val activity = activity as WeatherActivity
+            activity.openSearchFragment()
+        }
+    }
+
+    private fun addCityWeatherData() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
@@ -45,7 +58,8 @@ class CityFragment : Fragment() {
                         countryTextView.text = "Lithuania"
                         descriptionTextView.text = "Sunny with a chance of rain"
                         temperatureTextView.text = "26"
-                        val photoPath = "https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2022/03/the_sun_in_high_resolution/24010613-1-eng-GB/The_Sun_in_high_resolution_pillars.jpg"
+                        val photoPath =
+                            "https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2022/03/the_sun_in_high_resolution/24010613-1-eng-GB/The_Sun_in_high_resolution_pillars.jpg"
                         weatherIconImageView.load(photoPath) {
                             size(ViewSizeResolver(weatherIconImageView))
                         }

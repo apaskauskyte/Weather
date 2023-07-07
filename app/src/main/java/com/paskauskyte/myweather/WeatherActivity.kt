@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.paskauskyte.myweather.city_fragment.CityFragment
 import com.paskauskyte.myweather.databinding.ActivityWeatherBinding
+import com.paskauskyte.myweather.search_fragment.SearchFragment
 
 class WeatherActivity : AppCompatActivity() {
 
@@ -17,13 +18,15 @@ class WeatherActivity : AppCompatActivity() {
         binding = ActivityWeatherBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (savedInstanceState == null) {
             openCityFragment()
-        }
     }
 
     private fun openCityFragment() {
         setCurrentFragment(CityFragment.newInstance(), CityFragment.TAG)
+    }
+
+    fun openSearchFragment() {
+        setCurrentFragment(SearchFragment.newInstance(), SearchFragment.TAG, true)
     }
 
     private fun setCurrentFragment(fragment: Fragment, tag: String, addBackStack: Boolean = false) {
