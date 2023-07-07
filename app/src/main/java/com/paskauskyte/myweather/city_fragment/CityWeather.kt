@@ -1,4 +1,4 @@
-package com.paskauskyte.myweather.repository
+package com.paskauskyte.myweather.city_fragment
 
 data class CityWeather(
     var city: String,
@@ -6,5 +6,4 @@ data class CityWeather(
     var temperature: String,
     var weatherIcon: String,
     var description: String,
-) {
-}
+)
