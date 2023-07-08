@@ -1,12 +1,15 @@
 package com.paskauskyte.myweather
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.paskauskyte.myweather.city_fragment.CityFragment
 import com.paskauskyte.myweather.databinding.ActivityWeatherBinding
 import com.paskauskyte.myweather.search_fragment.SearchFragment
+import com.paskauskyte.myweather.settings_activity.SettingsActivity
 
 class WeatherActivity : AppCompatActivity() {
 
@@ -18,7 +21,7 @@ class WeatherActivity : AppCompatActivity() {
         binding = ActivityWeatherBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-            openCityFragment()
+        openCityFragment()
     }
 
     private fun openCityFragment() {
@@ -42,6 +45,17 @@ class WeatherActivity : AppCompatActivity() {
             if (addBackStack) {
                 addToBackStack(tag)
             }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }
