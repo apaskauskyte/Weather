@@ -8,6 +8,8 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -70,17 +72,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupSearchView() {
-        binding.searchView.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.generateCities()
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-            }
-        })
+        binding.searchView.addTextChangedListener {
+            val text = it?.toString() ?: return@addTextChangedListener
+            viewModel.findPlace(text)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
