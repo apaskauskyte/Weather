@@ -18,7 +18,6 @@ class SearchViewHolder(
         currentCity = city
         binding.apply {
             cityTextView.text = city.name
-            countryTextView.text = city.country
         }
     }
 }

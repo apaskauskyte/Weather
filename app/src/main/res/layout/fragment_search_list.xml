@@ -22,20 +22,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:hint="City" />
-
-    <TextView
-        android:id="@+id/countryTextView"
-        android:layout_width="150dp"
-        android:layout_height="24dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:gravity="start"
-        android:lineSpacingExtra="10sp"
-        android:translationY="-4.97sp"
-        app:layout_constraintStart_toEndOf="@+id/cityTextView"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:hint="Country" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
