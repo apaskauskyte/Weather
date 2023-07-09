@@ -6,6 +6,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import com.google.android.libraries.places.api.Places
 import com.paskauskyte.myweather.city.CityFragment
 import com.paskauskyte.myweather.databinding.ActivityWeatherBinding
 import com.paskauskyte.myweather.search.SearchFragment
@@ -22,6 +23,7 @@ class WeatherActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         openCityFragment()
+        initializePlaces()
     }
 
     private fun openCityFragment() {
@@ -57,5 +59,10 @@ class WeatherActivity : AppCompatActivity() {
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun initializePlaces() {
+        Places.initialize(applicationContext, R.string.googleApiKey.toString())
+        val placesClient = Places.createClient(this)
     }
 }
