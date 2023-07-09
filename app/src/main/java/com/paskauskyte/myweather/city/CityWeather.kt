@@ -1,4 +1,4 @@
-package com.paskauskyte.myweather.city_fragment
+package com.paskauskyte.myweather.city
 
 data class CityWeather(
     var city: String,

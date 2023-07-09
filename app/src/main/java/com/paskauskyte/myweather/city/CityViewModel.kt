@@ -1,8 +1,7 @@
-package com.paskauskyte.myweather.city_fragment
+package com.paskauskyte.myweather.city
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.paskauskyte.myweather.repository.CityWeather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

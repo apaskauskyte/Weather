@@ -1,4 +1,4 @@
-package com.paskauskyte.myweather.search_fragment
+package com.paskauskyte.myweather.search
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -6,10 +6,10 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import com.paskauskyte.myweather.city_fragment.CityFragment
+import com.paskauskyte.myweather.city.CityFragment
 import com.paskauskyte.myweather.databinding.ActivityWeatherBinding
-import com.paskauskyte.myweather.search_fragment.SearchFragment
-import com.paskauskyte.myweather.settings_activity.SettingsActivity
+import com.paskauskyte.myweather.search.SearchFragment
+import com.paskauskyte.myweather.settings.SettingsActivity
 
 class WeatherActivity : AppCompatActivity() {
 

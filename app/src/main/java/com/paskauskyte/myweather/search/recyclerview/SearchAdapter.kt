@@ -1,11 +1,11 @@
-package com.paskauskyte.myweather.search_fragment.recyclerview
+package com.paskauskyte.myweather.search.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.paskauskyte.myweather.databinding.FragmentSearchListBinding
-import com.paskauskyte.myweather.search_fragment.City
+import com.paskauskyte.myweather.search.City
 
 class SearchAdapter(
     private val onClick: (City) -> Unit

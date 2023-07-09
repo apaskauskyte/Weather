@@ -1,8 +1,8 @@
-package com.paskauskyte.myweather.search_fragment.recyclerview
+package com.paskauskyte.myweather.search.recyclerview
 
 import androidx.recyclerview.widget.RecyclerView
 import com.paskauskyte.myweather.databinding.FragmentSearchListBinding
-import com.paskauskyte.myweather.search_fragment.City
+import com.paskauskyte.myweather.search.City
 
 class SearchViewHolder(
     private val binding: FragmentSearchListBinding,

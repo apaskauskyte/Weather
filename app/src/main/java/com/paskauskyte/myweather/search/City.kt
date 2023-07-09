@@ -1,4 +1,4 @@
-package com.paskauskyte.myweather.search_fragment
+package com.paskauskyte.myweather.search
 
 data class City(
     var name: String,

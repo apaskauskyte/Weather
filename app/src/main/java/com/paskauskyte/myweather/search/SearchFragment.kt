@@ -1,4 +1,4 @@
-package com.paskauskyte.myweather.search_fragment
+package com.paskauskyte.myweather.search
 
 import android.os.Bundle
 import android.text.Editable
@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.paskauskyte.myweather.R
 import com.paskauskyte.myweather.databinding.FragmentSearchBinding
-import com.paskauskyte.myweather.search_fragment.recyclerview.SearchAdapter
+import com.paskauskyte.myweather.search.recyclerview.SearchAdapter
 import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
