@@ -2,15 +2,11 @@ package com.paskauskyte.myweather.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.libraries.places.api.model.PlaceTypes
-import com.google.android.libraries.places.ktx.api.net.awaitFindAutocompletePredictions
-import com.paskauskyte.myweather.PlacesClientProvider
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+
 
 class SearchViewModel : ViewModel() {
 
@@ -18,20 +14,18 @@ class SearchViewModel : ViewModel() {
         MutableStateFlow(emptyList())
     val cityListStateFlow = _cityListStateFlow.asStateFlow()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun findPlace(text: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = PlacesClientProvider.placesClient.awaitFindAutocompletePredictions {
-                query = text
-                typesFilter = mutableListOf(PlaceTypes.CITIES)
-            }
-
-            val cities = response.autocompletePredictions.map {
+        viewModelScope.launch {
+            val places = findAutoCompletePredictions(text)
+            val cities = places.map {
                 City(name = it.getFullText(null).toString(), placeId = it.placeId)
             }
-            withContext(Dispatchers.Main) {
-                _cityListStateFlow.value = cities
-            }
+            _cityListStateFlow.value = cities
         }
+    }
+
+    private suspend fun getPlaceLatLng(placeId: String): LatLng {
+        val place = fetchPlace(placeId)
+        return place.latLng!!
     }
 }
