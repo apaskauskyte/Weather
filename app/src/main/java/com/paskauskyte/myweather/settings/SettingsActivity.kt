@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
+import com.paskauskyte.myweather.Constants.SHARED_PREFS_NAME
 import com.paskauskyte.myweather.R
 import com.paskauskyte.myweather.databinding.ActivitySettingsBinding
 
@@ -39,15 +40,15 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun saveTempScaleSettingButton(value: Boolean) {
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+        val sharedPref = this.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE) ?: return
         with(sharedPref.edit()) {
             putBoolean("key_celsius_on", value)
             apply()
         }
     }
 
-    private fun readTempScaleSettingButton() {
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+    fun readTempScaleSettingButton() {
+        val sharedPref = this.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE) ?: return
         val defaultValue = true
         val celsiusIsOn = sharedPref.getBoolean("key_celsius_on", defaultValue)
 

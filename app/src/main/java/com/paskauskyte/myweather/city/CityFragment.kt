@@ -1,5 +1,6 @@
 package com.paskauskyte.myweather.city
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import coil.load
+import com.paskauskyte.myweather.Constants.SHARED_PREFS_NAME
 import com.paskauskyte.myweather.R
 import com.paskauskyte.myweather.WeatherActivity
 import com.paskauskyte.myweather.databinding.FragmentCityBinding
@@ -51,12 +53,27 @@ class CityFragment : Fragment() {
                 cityTextView.text = cityWeather.city.substringBefore(',')
                 countryTextView.text = cityWeather.country
                 descriptionTextView.text = cityWeather.description
-                temperatureTextView.text = cityWeather.temperature.toString() + "°C"
+                temperatureTextView.text = showTemperature(cityWeather)
                 val photoId = cityWeather.weatherIcon
+                // TODO: we want to refactor cityWeather to separate classes. One for Api layer, one for UI layer
                 val url = "https://openweathermap.org/img/wn/$photoId@2x.png"
                 weatherIconImageView.load(url)
             }
         }
+    }
+
+    //TODO: Extract to viewModel. But start with the cityWeather logical splitting (API vs UI)
+    private fun showTemperature(cityWeather: CityWeather): String {
+        val sharedPref = activity?.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+        // TODO: extract to constants
+        val celsiusIsOn = sharedPref?.getBoolean("key_celsius_on", true)
+
+        val temperature = when (celsiusIsOn) {
+            true -> cityWeather.temperature.toString() + "°C"
+            false -> ((((cityWeather.temperature)?.toInt())?.times(2))?.plus(30)).toString() + "°F"
+            else -> {cityWeather.temperature.toString() + "°C"}
+        }
+        return temperature
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
