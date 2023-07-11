@@ -1,5 +1,6 @@
 package com.paskauskyte.myweather.settings
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
@@ -16,6 +17,8 @@ class SettingsActivity : AppCompatActivity() {
 
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        readTempScaleSettingButton()
     }
 
     fun onScaleButtonClicked(view: View) {
@@ -25,13 +28,35 @@ class SettingsActivity : AppCompatActivity() {
             when (view.getId()) {
                 R.id.celsius ->
                     if (checked) {
-                        // Celsius on
+                        saveTempScaleSettingButton(true)
                     }
                 R.id.fahrenheit ->
                     if (checked) {
-                        // Fahrenheit on
+                        saveTempScaleSettingButton(false)
                     }
             }
+        }
+    }
+
+    private fun saveTempScaleSettingButton(value: Boolean) {
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            putBoolean("key_celsius_on", value)
+            apply()
+        }
+    }
+
+    private fun readTempScaleSettingButton() {
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+        val defaultValue = true
+        val celsiusIsOn = sharedPref.getBoolean("key_celsius_on", defaultValue)
+
+        if (celsiusIsOn) {
+            binding.celsius.isChecked = true
+            binding.fahrenheit.isChecked = false
+        } else {
+            binding.celsius.isChecked = false
+            binding.fahrenheit.isChecked = true
         }
     }
 }
