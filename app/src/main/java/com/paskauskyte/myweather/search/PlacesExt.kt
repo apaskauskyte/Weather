@@ -30,7 +30,7 @@ suspend fun findAutoCompletePredictions(query: String): List<AutocompletePredict
 suspend fun fetchPlace(placeId: String): Place {
     val response = PlacesClientProvider.placesClient.awaitFetchPlace(
         placeId, listOf(
-            Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ID
+            Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ID, Place.Field.ADDRESS_COMPONENTS
         )
     )
     return response.place

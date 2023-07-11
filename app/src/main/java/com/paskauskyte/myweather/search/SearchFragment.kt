@@ -1,16 +1,15 @@
 package com.paskauskyte.myweather.search
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +17,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.paskauskyte.myweather.R
+import com.paskauskyte.myweather.city.CityWeather
 import com.paskauskyte.myweather.databinding.FragmentSearchBinding
 import com.paskauskyte.myweather.search.recyclerview.SearchAdapter
 import kotlinx.coroutines.launch
@@ -44,14 +44,22 @@ class SearchFragment : Fragment() {
         setUpRecyclerView()
         setupSearchView()
         addCityList()
+        observeCityWeather()
     }
 
     private fun setUpRecyclerView() {
         binding.searchRecyclerView.apply {
-            recyclerAdapter = SearchAdapter { city -> }
+            recyclerAdapter = SearchAdapter { city -> onCityClick(city) }
             adapter = recyclerAdapter
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        }
+    }
+
+    private fun setupSearchView() {
+        binding.searchView.addTextChangedListener {
+            val text = it?.toString() ?: return@addTextChangedListener
+            viewModel.findPlace(text)
         }
     }
 
@@ -71,11 +79,20 @@ class SearchFragment : Fragment() {
         binding.searchRecyclerView.adapter = recyclerAdapter
     }
 
-    private fun setupSearchView() {
-        binding.searchView.addTextChangedListener {
-            val text = it?.toString() ?: return@addTextChangedListener
-            viewModel.findPlace(text)
+    private fun onCityClick(city: City) {
+        viewModel.loadWeather(city)
+    }
+
+    private fun observeCityWeather() {
+        viewModel.cityWeatherLiveData.observe(viewLifecycleOwner) { cityWeather ->
+            transferDataToCityFragment(cityWeather)
+            parentFragmentManager.popBackStack()
         }
+    }
+
+    private fun transferDataToCityFragment(cityWeather: CityWeather) {
+        val bundle = bundleOf(KEY_SOURCE_CITY to cityWeather)
+        setFragmentResult(REQUEST_KEY_CITY, bundle)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,6 +111,8 @@ class SearchFragment : Fragment() {
 
     companion object {
         const val TAG = "search_fragment"
+        const val REQUEST_KEY_CITY = "city_fragment_result_key"
+        const val KEY_SOURCE_CITY = "key_source_city"
         fun newInstance() = SearchFragment()
     }
 }

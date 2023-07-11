@@ -1,20 +1,15 @@
 package com.paskauskyte.myweather.weather_api
 
-import com.google.gson.annotations.SerializedName
+data class CityWeatherResponse(
+    val current: Current
+)
 
-data class CityWeatherResponse (
-    @field:SerializedName("current.temp")
-    val currentTemp: String,
+data class Current(
+    val temp: Double,
+    val weather: List<Weather>
+)
 
-    @field:SerializedName("current.weather.description")
+data class Weather(
     val description: String,
-
-//    @field:SerializedName("current.humidity")
-//    val humidity: Int,
-//
-//    @field:SerializedName("current.uvi")
-//    val uvIndex: Int,
-//
-//    @field:SerializedName("current.rain")
-//    val rain: Int,
+    val icon: String
 )

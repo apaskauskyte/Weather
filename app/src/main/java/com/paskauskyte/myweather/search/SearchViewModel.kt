@@ -38,22 +38,26 @@ class SearchViewModel : ViewModel() {
             val country = findCountry(place)
             val response = WeatherApiServiceClient.providesApiService().getCityWeather(
                 place.latLng.latitude,
-                place.latLng.longitude
+                place.latLng.longitude,
+                "metric"
             )
-            cityWeatherLiveData.value = CityWeather(
-                city.name,
-                country,
-                response.body()?.currentTemp ?: "",
-                "",
-                response.body()?.description ?: "")
+            cityWeatherLiveData.postValue(
+                CityWeather(
+                    city.name,
+                    country,
+                    response.body()?.current?.temp,
+                    response.body()?.current?.weather?.get(0)?.icon ?: "",
+                    response.body()?.current?.weather?.get(0)?.description ?: ""
+                )
+            )
         }
     }
 
     private fun findCountry(place: Place): String? {
-        place.addressComponents.asList().forEach {addressComponent ->
-            val country = addressComponent.types.find {it.equals("country")}
-            if(country != null) {
-                return country
+        place.addressComponents.asList().forEach { addressComponent ->
+            val country = addressComponent.types.find { it.contains("country") }
+            if (country != null) {
+                return addressComponent.name
             }
         }
         return null

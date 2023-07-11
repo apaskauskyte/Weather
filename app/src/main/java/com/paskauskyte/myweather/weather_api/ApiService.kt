@@ -9,6 +9,7 @@ interface ApiService {
     suspend fun getCityWeather(
         @Query("lat") latitude: Double,
         @Query("lon") longitude: Double,
-//        @Query("appid") apiKey: String = "7b51caeff3b17dccc9c31c5e59ff2ef4",
+        @Query("units") units: String,
+        @Query("appid") apiKey: String = "7b51caeff3b17dccc9c31c5e59ff2ef4",
     ): Response<CityWeatherResponse>
 }

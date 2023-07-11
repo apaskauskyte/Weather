@@ -11,7 +11,6 @@ object WeatherApiServiceClient {
     val client = OkHttpClient.Builder()
         .addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("x-api-key", "7b51caeff3b17dccc9c31c5e59ff2ef4")
                 .build()
             chain.proceed(newRequest)
         }

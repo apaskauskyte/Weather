@@ -7,16 +7,13 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import coil.load
-import coil.size.ViewSizeResolver
 import com.paskauskyte.myweather.R
 import com.paskauskyte.myweather.WeatherActivity
 import com.paskauskyte.myweather.databinding.FragmentCityBinding
-import kotlinx.coroutines.launch
+import com.paskauskyte.myweather.search.SearchFragment
 
 class CityFragment : Fragment() {
 
@@ -36,8 +33,9 @@ class CityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        addCityWeatherData()
+        receiveDataFromSearchFragment()
         onClickSearchButton()
+        observeCityWeather()
     }
 
     private fun onClickSearchButton() {
@@ -47,23 +45,16 @@ class CityFragment : Fragment() {
         }
     }
 
-    private fun addCityWeatherData() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                viewModel.cityWeatherStateFlow.collect {
-                    binding.apply {
-                        cityTextView.text = "Vilnius"
-                        countryTextView.text = "Lithuania"
-                        descriptionTextView.text = "Sunny with a chance of rain"
-                        temperatureTextView.text = "26"
-                        val photoPath =
-                            "https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2022/03/the_sun_in_high_resolution/24010613-1-eng-GB/The_Sun_in_high_resolution_pillars.jpg"
-                        weatherIconImageView.load(photoPath) {
-                            size(ViewSizeResolver(weatherIconImageView))
-                        }
-                    }
-                }
+    private fun observeCityWeather() {
+        viewModel.cityWeatherLiveData.observe(viewLifecycleOwner) { cityWeather ->
+            binding.apply {
+                cityTextView.text = cityWeather.city.substringBefore(',')
+                countryTextView.text = cityWeather.country
+                descriptionTextView.text = cityWeather.description
+                temperatureTextView.text = cityWeather.temperature.toString() + "°C"
+                val photoId = cityWeather.weatherIcon
+                val url = "https://openweathermap.org/img/wn/$photoId@2x.png"
+                weatherIconImageView.load(url)
             }
         }
     }
@@ -80,6 +71,14 @@ class CityFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun receiveDataFromSearchFragment() {
+        setFragmentResultListener(SearchFragment.REQUEST_KEY_CITY) { requestKey, bundle ->
+            val cityWeather = bundle.getParcelable<CityWeather>(SearchFragment.KEY_SOURCE_CITY)
+                ?: return@setFragmentResultListener
+            viewModel.saveCityWeather(cityWeather)
+        }
     }
 
     companion object {
