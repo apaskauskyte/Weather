@@ -11,7 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import coil.load
-import com.paskauskyte.myweather.Constants.SHARED_PREFS_NAME
+import com.paskauskyte.myweather.Constants.CELSIUS_ON_KEY
+import com.paskauskyte.myweather.Constants.TEMP_SCALE_SHARED_PREFS_NAME
 import com.paskauskyte.myweather.R
 import com.paskauskyte.myweather.WeatherActivity
 import com.paskauskyte.myweather.databinding.FragmentCityBinding
@@ -64,14 +65,17 @@ class CityFragment : Fragment() {
 
     //TODO: Extract to viewModel. But start with the cityWeather logical splitting (API vs UI)
     private fun showTemperature(cityWeather: CityWeather): String {
-        val sharedPref = activity?.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+        val sharedPref =
+            activity?.getSharedPreferences(TEMP_SCALE_SHARED_PREFS_NAME, Context.MODE_PRIVATE)
         // TODO: extract to constants
-        val celsiusIsOn = sharedPref?.getBoolean("key_celsius_on", true)
+        val celsiusIsOn = sharedPref?.getBoolean(CELSIUS_ON_KEY, true)
 
         val temperature = when (celsiusIsOn) {
             true -> cityWeather.temperature.toString() + "°C"
             false -> ((((cityWeather.temperature)?.toInt())?.times(2))?.plus(30)).toString() + "°F"
-            else -> {cityWeather.temperature.toString() + "°C"}
+            else -> {
+                cityWeather.temperature.toString() + "°C"
+            }
         }
         return temperature
     }
