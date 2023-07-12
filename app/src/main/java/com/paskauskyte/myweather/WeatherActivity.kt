@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.paskauskyte.myweather.city.CityFragment
 import com.paskauskyte.myweather.databinding.ActivityWeatherBinding
+import com.paskauskyte.myweather.history.HistoryFragment
 import com.paskauskyte.myweather.search.SearchFragment
 import com.paskauskyte.myweather.settings.SettingsActivity
 
@@ -25,11 +26,15 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     private fun openCityFragment() {
-        setCurrentFragment(CityFragment.newInstance(), CityFragment.TAG)
+        setCurrentFragment(CityFragment.newInstance(), CityFragment.TAG, true)
     }
 
     fun openSearchFragment() {
         setCurrentFragment(SearchFragment.newInstance(), SearchFragment.TAG, true)
+    }
+
+    fun openHistoryFragment() {
+        setCurrentFragment(HistoryFragment.newInstance(), HistoryFragment.TAG, true)
     }
 
     private fun setCurrentFragment(fragment: Fragment, tag: String, addBackStack: Boolean = false) {
@@ -52,6 +57,11 @@ class WeatherActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.settings -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
+                true
+            }
+
+            R.id.history -> {
+                openHistoryFragment()
                 true
             }
 

@@ -1,5 +1,6 @@
 package com.paskauskyte.myweather.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -16,6 +17,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.paskauskyte.myweather.Constants.ADD_TO_HISTORY_KEY
+import com.paskauskyte.myweather.Constants.HISTORY_SHARED_PREFS_NAME
 import com.paskauskyte.myweather.R
 import com.paskauskyte.myweather.city.CityWeather
 import com.paskauskyte.myweather.databinding.FragmentSearchBinding
@@ -81,6 +85,27 @@ class SearchFragment : Fragment() {
 
     private fun onCityClick(city: City) {
         viewModel.loadWeather(city)
+        updateCityHistory(city)
+    }
+
+    private fun updateCityHistory(city: City) {
+        val sharedPref =
+            activity?.getSharedPreferences(HISTORY_SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+                ?: return
+        val defaultValue = emptyList<City>().toString()
+        val listOfCitiesAsString =
+            sharedPref.getString(ADD_TO_HISTORY_KEY, defaultValue)
+
+        val listOfCities = Gson().fromJson<List<City>>(listOfCitiesAsString, List::class.java).toMutableList()
+
+        listOfCities.add(city)
+
+        val newListOfCitiesAsString = Gson().toJson(listOfCities)
+
+        with(sharedPref.edit()) {
+            putString(ADD_TO_HISTORY_KEY, newListOfCitiesAsString)
+            apply()
+        }
     }
 
     private fun observeCityWeather() {
